@@ -35,7 +35,7 @@ func parseSpans(spans []Span) []spanWithInterval {
 
 func groupSpans(spans []Span) map[string][]spanWithInterval {
 	parsed := parseSpans(spans)
-	var groups map[string][]spanWithInterval
+	groups := make(map[string][]spanWithInterval)
 	for _, item := range parsed {
 		key := fmt.Sprintf("%d:%s", item.span.EmployeeID, item.span.WorkDate)
 		groups[key] = append(groups[key], item)

@@ -18,7 +18,7 @@ func OverlapFreeWeeklyHours(spans []Span) []EmployeeHours {
 }
 
 func weeklyHours(spans []Span, mergeOverlaps bool) []EmployeeHours {
-	var byEmployee map[int64][]spanWithInterval
+	byEmployee := make(map[int64][]spanWithInterval)
 	for _, item := range parseSpans(spans) {
 		byEmployee[item.span.EmployeeID] = append(byEmployee[item.span.EmployeeID], item)
 	}
@@ -49,7 +49,7 @@ func weeklyHours(spans []Span, mergeOverlaps bool) []EmployeeHours {
 }
 
 func mergedMinutes(items []spanWithInterval) int {
-	var byDate map[string][]spanWithInterval
+	byDate := make(map[string][]spanWithInterval)
 	for _, item := range items {
 		byDate[item.span.WorkDate] = append(byDate[item.span.WorkDate], item)
 	}
