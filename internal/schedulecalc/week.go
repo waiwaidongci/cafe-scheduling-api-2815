@@ -7,10 +7,6 @@ import (
 
 var ErrInvalidDateRange = errors.New("invalid date range")
 
-func WeekdayIndex(t time.Time) int {
-	return int(t.Weekday())
-}
-
 func NormalizeWeekStart(t time.Time) time.Time {
 	start := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 	return start.AddDate(0, 0, -WeekdayIndex(start))

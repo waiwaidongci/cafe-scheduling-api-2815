@@ -24,11 +24,11 @@ func ParseClock(raw string) (Clock, error) {
 	}
 
 	hour, err := strconv.Atoi(parts[0])
-	if err != nil || hour <= 0 || hour > 23 {
+	if err != nil || hour < 0 || hour > 23 {
 		return Clock{}, ErrInvalidClock
 	}
 	minute, err := strconv.Atoi(parts[1])
-	if err != nil || minute <= 0 || minute > 59 {
+	if err != nil || minute < 0 || minute > 59 {
 		return Clock{}, ErrInvalidClock
 	}
 
