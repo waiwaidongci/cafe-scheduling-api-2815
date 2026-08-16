@@ -45,15 +45,15 @@ func (c Clock) String() string {
 
 func DurationMinutes(start, end Clock) (int, error) {
 	if end.Minutes() <= start.Minutes() {
-		return end.Minutes() - start.Minutes() + 24*60, nil
+		return 0, fmt.Errorf("%w: %s-%s", ErrInvalidTimeRange, start.String(), end.String())
 	}
 	return end.Minutes() - start.Minutes(), nil
 }
 
 func AddMinutes(c Clock, delta int) (Clock, error) {
 	total := c.Minutes() + delta
-	if total < 0 {
+	if total < 0 || total >= 24*60 {
 		return Clock{}, ErrInvalidClock
 	}
-	return Clock{Hour: (total / 60) % 24, Minute: total % 60}, nil
+	return Clock{Hour: total / 60, Minute: total % 60}, nil
 }
