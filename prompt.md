@@ -1,0 +1,3 @@
+# 项目：咖啡店排班系统API
+
+从0做一个Go咖啡店排班系统API，用Gin开发，数据库用PostgreSQL。系统服务店长和员工两类角色：店长可以维护员工信息、班次类型、每周营业时间并生成排班，员工只能查看自己的排班。支持在周视图查询排班、检测同一员工的重叠班次、按周统计每人排班小时数、调整某天班次。代码按Go企业项目结构组织：cmd/api/main.go启动HTTP服务，cmd/migrate执行数据库迁移，internal/config读取配置，internal/model定义员工、班次、排班、营业时间等模型，internal/repository按模块封装数据访问，internal/service实现排班校验和工时统计，internal/handler处理接口参数，internal/middleware实现登录鉴权和角色控制，internal/router统一注册路由并分组，internal/pkg存放响应封装和分页等公共能力，migrations放建表和种子数据SQL。排班冲突校验必须放在service层，数据库查询使用事务保证排班调整的原子性。
