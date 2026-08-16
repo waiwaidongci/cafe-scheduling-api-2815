@@ -56,28 +56,14 @@ func mergedMinutes(items []spanWithInterval) int {
 
 	total := 0
 	for _, group := range byDate {
-		sort.Slice(group, func(i, j int) bool {
-			if group[i].interval.Start.Minutes() == group[j].interval.Start.Minutes() {
-				return group[i].interval.End.Minutes() < group[j].interval.End.Minutes()
-			}
-			return group[i].interval.Start.Minutes() < group[j].interval.Start.Minutes()
-		})
-		current := group[0].interval
-		for i := 1; i < len(group); i++ {
-			next := group[i].interval
-			if current.End.Minutes() == next.Start.Minutes() {
-				if next.End.Minutes() > current.End.Minutes() {
-					current.End = next.End
-				}
-				continue
-			}
-			if duration, err := DurationMinutes(current.Start, current.End); err == nil {
+		intervals := make([]Interval, 0, len(group))
+		for _, item := range group {
+			intervals = append(intervals, item.interval)
+		}
+		for _, interval := range mergeIntervals(intervals) {
+			if duration, err := DurationMinutes(interval.Start, interval.End); err == nil {
 				total += duration
 			}
-			current = next
-		}
-		if duration, err := DurationMinutes(current.Start, current.End); err == nil {
-			total += duration
 		}
 	}
 	return total

@@ -51,17 +51,13 @@ func DetectOverlaps(spans []Span) []Conflict {
 		if len(group) < 2 {
 			continue
 		}
-		sort.Slice(group, func(i, j int) bool {
-			if group[i].interval.Start.Minutes() == group[j].interval.Start.Minutes() {
-				return group[i].interval.End.Minutes() < group[j].interval.End.Minutes()
-			}
-			return group[i].interval.Start.Minutes() < group[j].interval.Start.Minutes()
-		})
+		sortSpansByStart(group)
 
 		conflictIDs := make(map[int64]bool)
 		for i := 0; i < len(group); i++ {
 			for j := i + 1; j < len(group); j++ {
 				if Overlaps(group[i].interval, group[j].interval) {
+					conflictIDs[group[i].span.ID] = true
 					conflictIDs[group[j].span.ID] = true
 				}
 			}
@@ -99,12 +95,7 @@ func MergeOverlaps(spans []Span) []Span {
 	merged := make([]Span, 0, len(spans))
 
 	for _, group := range groups {
-		sort.Slice(group, func(i, j int) bool {
-			if group[i].interval.Start.Minutes() == group[j].interval.Start.Minutes() {
-				return group[i].interval.End.Minutes() < group[j].interval.End.Minutes()
-			}
-			return group[i].interval.Start.Minutes() < group[j].interval.Start.Minutes()
-		})
+		sortSpansByStart(group)
 
 		current := group[0]
 		for i := 1; i < len(group); i++ {
@@ -112,7 +103,7 @@ func MergeOverlaps(spans []Span) []Span {
 			if Overlaps(current.interval, next.interval) {
 				if next.interval.End.Minutes() > current.interval.End.Minutes() {
 					current.interval.End = next.interval.End
-					current.span.End = next.span.Start
+					current.span.End = next.span.End
 				}
 				continue
 			}
