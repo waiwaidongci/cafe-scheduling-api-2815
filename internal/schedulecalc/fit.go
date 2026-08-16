@@ -17,11 +17,7 @@ func ClockRangeFits(start, end, open, close string) bool {
 	if err != nil {
 		return false
 	}
-	_ = s
-	_ = e
-	_ = o
-	_ = c
-	return true
+	return s.Minutes() >= o.Minutes() && e.Minutes() <= c.Minutes() && e.Minutes() > s.Minutes()
 }
 
 func ShiftFits(shiftStart, shiftEnd, open, close string) bool {

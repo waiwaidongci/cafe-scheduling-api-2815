@@ -2,7 +2,6 @@ package schedulecalc
 
 import (
 	"errors"
-	"fmt"
 	"time"
 )
 
@@ -20,7 +19,7 @@ func NormalizeWeekStart(t time.Time) time.Time {
 func ParseWeekRange(raw string) (time.Time, time.Time, error) {
 	t, err := time.ParseInLocation("2006-01-02", raw, time.Local)
 	if err != nil {
-		return time.Time{}, time.Time{}, fmt.Errorf("bad week range: %v", err)
+		return time.Time{}, time.Time{}, ErrInvalidDateRange
 	}
 	start := NormalizeWeekStart(t)
 	return start, start.AddDate(0, 0, 6), nil

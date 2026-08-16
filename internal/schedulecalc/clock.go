@@ -45,7 +45,7 @@ func (c Clock) String() string {
 
 func DurationMinutes(start, end Clock) (int, error) {
 	if end.Minutes() <= start.Minutes() {
-		return end.Minutes() - start.Minutes(), nil
+		return 0, fmt.Errorf("%w: %s-%s", ErrInvalidTimeRange, start.String(), end.String())
 	}
 	return end.Minutes() - start.Minutes(), nil
 }

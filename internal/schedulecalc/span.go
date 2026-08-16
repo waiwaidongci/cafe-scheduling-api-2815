@@ -24,7 +24,7 @@ func NewInterval(start, end string) (Interval, error) {
 		return Interval{}, err
 	}
 	if e.Minutes() <= s.Minutes() {
-		return Interval{}, ErrInvalidClock
+		return Interval{}, ErrInvalidTimeRange
 	}
 	return Interval{Start: s, End: e}, nil
 }
